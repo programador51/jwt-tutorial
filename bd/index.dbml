@@ -1,0 +1,32 @@
+Table Users{
+  id INT [pk, increment]
+  isPremium TINYINT [not null]
+  password NVARCHAR(MAX) [not null, note:'Remember, must be hashed, thats why a long length'] 
+  email NVARCHAR(256) [not null]
+}
+
+Table RefreshTokens{
+  id INT [pk, increment]
+  browser NVARCHAR(256)
+  country NVARCHAR(256)
+  device NVARCHAR(256) [note:'For instance, Windows10 , Linux, etc...']
+  deviceVersion NVARCHAR(256)
+  ip NVARCHAR(256)
+  refreshToken NVARCHAR(256) [not null]
+  userId INT [not null]
+    Note{ '''
+    This table it's necessary to create the login system. You can avoid 
+    * browser
+    * country
+    * device
+    * deviceVersion
+    * ip
+
+    That propertys are optional, but if you add them, the system will be able to show the user
+    the session that he have done. This can be helpful when the system detect a ip login different
+    from the usual and warn the user about that login info. 
+  '''
+  }
+}
+
+Ref: "Users"."id" - "RefreshTokens"."userId"
